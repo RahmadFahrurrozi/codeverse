@@ -1,16 +1,25 @@
-import Link from "next/link";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from "@clerk/nextjs";
 
 export default function Home() {
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="flex flex-col items-center">
-        <h1>Hello World</h1>
-        <Link href="/auth/login">
-          <button className="bg-white px-4 py-1 text-gray-800 rounded-md cursor-pointer">
-            Login
+    <header className="flex justify-end items-center p-4 gap-4 h-16">
+      <SignedOut>
+        <SignInButton mode="modal" />
+        <SignUpButton>
+          <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+            Sign Up
           </button>
-        </Link>
-      </div>
-    </div>
+        </SignUpButton>
+      </SignedOut>
+      <SignedIn>
+        <UserButton />
+      </SignedIn>
+    </header>
   );
 }
