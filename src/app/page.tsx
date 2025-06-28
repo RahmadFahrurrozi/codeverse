@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   SignedIn,
   SignedOut,
@@ -8,13 +9,15 @@ import {
 
 export default function Home() {
   return (
-    <header className="flex justify-end items-center p-4 gap-4 h-16">
+    <header className="flex justify-end items-center p-4 gap-2 h-16">
       <SignedOut>
-        <SignInButton mode="modal" />
+        <SignInButton mode="modal">
+          <Button className="cursor-pointer">Sign In</Button>
+        </SignInButton>
         <SignUpButton>
-          <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+          <Button className="cursor-pointer" variant={"outline"}>
             Sign Up
-          </button>
+          </Button>
         </SignUpButton>
       </SignedOut>
       <SignedIn>
