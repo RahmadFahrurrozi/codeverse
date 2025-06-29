@@ -1,3 +1,4 @@
+import { ModeToggle } from "@/components/mode-toogle";
 import { Button } from "@/components/ui/button";
 import {
   SignedIn,
@@ -23,6 +24,7 @@ export default function Home() {
       <SignedIn>
         <UserButton />
       </SignedIn>
+      <ModeToggle />
     </header>
   );
 }
