@@ -49,3 +49,24 @@ export async function syncUser() {
     console.log("Error in syncUser", error);
   }
 }
+
+export async function getUserByClerkId(clerkId: string) {
+  try {
+    return await prisma.user.findUnique({
+      where: {
+        clerkId,
+      },
+      include: {
+        _count: {
+          select: {
+            followers: true,
+            following: true,
+            posts: true,
+          },
+        },
+      },
+    });
+  } catch (error) {
+    console.log("Error in getUserByClerkId", error);
+  }
+}
