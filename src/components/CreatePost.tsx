@@ -1,7 +1,7 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { Card, CardContent } from "./ui/card";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Textarea } from "./ui/textarea";
@@ -9,6 +9,7 @@ import { Button } from "./ui/button";
 import { ImageIcon, Loader2Icon, SendIcon } from "lucide-react";
 import { createPost } from "@/actions/post.action";
 import toast from "react-hot-toast";
+import ImageUpload from "./ImageUpload";
 
 const CreatePost = () => {
   const { user } = useUser();
@@ -54,7 +55,20 @@ const CreatePost = () => {
           />
         </div>
 
-        {/* handle upload */}
+        {(showImageUpload || imageUrl) && (
+          <div className="border rounded-lg p-4">
+            <Suspense>
+              <ImageUpload
+                endpoint="postImage"
+                value={imageUrl}
+                onChange={(url) => {
+                  setImageUrl(url);
+                  if (!url) setShowImageUpload(false);
+                }}
+              />
+            </Suspense>
+          </div>
+        )}
 
         <div className="flex items-center justify-between border-t pt-4">
           <div className="flex space-x-2">
