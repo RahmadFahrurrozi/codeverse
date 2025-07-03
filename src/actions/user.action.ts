@@ -17,61 +17,40 @@ export async function syncUser() {
       },
     });
 
-    const clerkName = `${user.firstName || ""} ${user.lastName || ""}`;
-    const clerkUsername =
-      user.username ?? user.emailAddresses[0].emailAddress.split("@")[0];
-    const clerkEmail = user.emailAddresses[0].emailAddress;
-    const clerkImage = user.imageUrl;
+    if (existingUser) return existingUser;
 
-    if (existingUser) {
-      // lakukan update
-      return await prisma.user.update({
-        where: {
-          clerkId: userId,
-        },
-        data: {
-          name: clerkName,
-          username: clerkUsername,
-          email: clerkEmail,
-          image: clerkImage,
-        },
-      });
-    }
-
-    // create jika belum ada
-    return await prisma.user.create({
+    const dbUser = await prisma.user.create({
       data: {
         clerkId: userId,
-        name: clerkName,
-        username: clerkUsername,
-        email: clerkEmail,
-        image: clerkImage,
+        name: `${user.firstName || ""} ${user.lastName || ""}`,
+        username:
+          user.username ?? user.emailAddresses[0].emailAddress.split("@")[0],
+        email: user.emailAddresses[0].emailAddress,
+        image: user.imageUrl,
       },
     });
+
+    return dbUser;
   } catch (error) {
     console.log("Error in syncUser", error);
   }
 }
 
 export async function getUserByClerkId(clerkId: string) {
-  try {
-    return await prisma.user.findUnique({
-      where: {
-        clerkId,
-      },
-      include: {
-        _count: {
-          select: {
-            followers: true,
-            following: true,
-            posts: true,
-          },
+  return prisma.user.findUnique({
+    where: {
+      clerkId,
+    },
+    include: {
+      _count: {
+        select: {
+          followers: true,
+          following: true,
+          posts: true,
         },
       },
-    });
-  } catch (error) {
-    console.log("Error in getUserByClerkId", error);
-  }
+    },
+  });
 }
 
 export async function getDbUserId() {
@@ -115,7 +94,6 @@ export async function getRandomUsers() {
         _count: {
           select: {
             followers: true,
-            following: true,
           },
         },
       },
