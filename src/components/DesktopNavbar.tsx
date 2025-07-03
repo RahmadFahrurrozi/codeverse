@@ -1,3 +1,5 @@
+"use server";
+
 import { BellIcon, HomeIcon, UserIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -31,7 +33,7 @@ async function DesktopNavbar() {
             <Link
               href={`/profile/${
                 user.username ??
-                user.emailAddresses[0].emailAddress.split("@")[0]
+                user.primaryEmailAddress?.emailAddress.split("@")[0]
               }`}
             >
               <UserIcon className="w-4 h-4" />
@@ -57,4 +59,5 @@ async function DesktopNavbar() {
     </div>
   );
 }
+
 export default DesktopNavbar;
