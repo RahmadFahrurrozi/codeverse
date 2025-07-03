@@ -7,6 +7,8 @@ import {
 import { notFound } from "next/navigation";
 import ProfilePageClient from "./ProfilePageClient";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({
   params,
 }: {
@@ -21,7 +23,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProfilePage({
+export default async function Page({
   params,
 }: {
   params: { username: string };
