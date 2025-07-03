@@ -12,9 +12,10 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({
   params,
 }: {
-  params: { username: string };
+  params: Promise<{ username: string }>;
 }) {
-  const user = await getProfileByUsername(params.username);
+  const { username } = await params;
+  const user = await getProfileByUsername(username);
   if (!user) return;
 
   return {
@@ -26,9 +27,10 @@ export async function generateMetadata({
 export default async function Page({
   params,
 }: {
-  params: { username: string };
+  params: Promise<{ username: string }>;
 }) {
-  const user = await getProfileByUsername(params.username);
+  const { username } = await params;
+  const user = await getProfileByUsername(username);
   if (!user) notFound();
 
   const [posts, likedPosts, isCurrentUserFollowing] = await Promise.all([
