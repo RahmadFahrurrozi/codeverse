@@ -16,14 +16,17 @@ import {
   MessageCircleIcon,
   SendIcon,
 } from "lucide-react";
+import { Suspense } from "react";
 
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { formatDistanceToNow } from "date-fns";
 import DeleteAlertDialog from "./DeleteAlertDialog";
-import Image from "next/image";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import Link from "next/link";
+import Image from "next/image";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
+import { PostSkeleton } from "./PostSkeleton";
 
 type Posts = Awaited<ReturnType<typeof getPosts>>;
 type Post = Posts[number];
@@ -135,12 +138,31 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
           {/* POST IMAGE */}
           {post.image && (
             <div className="rounded-lg overflow-hidden">
-              <Image
-                src={post.image}
-                alt={post.content || "Post image"}
-                width={500}
-                height={500}
-              />
+              <Suspense fallback={<PostSkeleton />}>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Image
+                      src={post.image}
+                      alt={post.content || "Post image"}
+                      width={500}
+                      height={500}
+                      className="cursor-pointer hover:opacity-90 transition-opacity"
+                    />
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-4xl p-0 bg-transparent border-none">
+                    <DialogTitle className="sr-only">Post Image</DialogTitle>
+                    <div className="flex items-center justify-center p-4">
+                      <Image
+                        src={post.image}
+                        alt={post.content || "Post image"}
+                        className="rounded-lg"
+                        width={1200}
+                        height={1200}
+                      />
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </Suspense>
             </div>
           )}
 
